@@ -9,7 +9,7 @@ public class Main {
         incrementingThread.start();
         decrementingThread.start();
         incrementingThread.join();
-        decrementingThread.join();
+        decrementingThread.join(); // not atomic operations
 
         System.out.println("We currently have " + inventoryCounter.getItems());
     }
