@@ -1,0 +1,21 @@
+Reentrant lock works like the synchronised keyword, but it requires explicit locking and unlocking
+Disadvantage - may forget to unlock object, can result in bugs and deadlocks, if exception is thrown in method we could
+never reach the unlock method
+Need to encapsulate logic in try finally so that unlock is always reached
+
+
+If thread tries to lock an object in use the thread is suspended and not wake up until lock is released. Cannot interrupt
+Or we can use lock interruptably method forces us to surround the lock using try catch in which case the thread will wake up
+with an interrupt useful for deadlock detection or gracefully cleaning and closing applications
+
+The trylock tries to acquire the lock, if the lock is unavailable it'll return false and move onto the next instruction
+Trylock doesnt block under any circumstances
+Use cases are real time applications where suspending a thread on a lock method is unacceptable e.g. Video, image processing,
+trading systems, UI applications
+
+ReadWriteLock - When read ops are predominant, or when the read ops are not as fast - reading from many vars, reading from
+a complex data struct, mutual exclusion of reading threads negatively impact the performance
+
+If we writeLock a critical section only 1 thread can enter the lock, multiple threads can enter a read lock
+If a write lock is acquired no thread can acquire a read lock
+If at least one thread holds the read lock no thread can acquire the write lock
