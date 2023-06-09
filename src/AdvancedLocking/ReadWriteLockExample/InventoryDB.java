@@ -2,14 +2,20 @@ package AdvancedLocking.ReadWriteLockExample;
 
 import java.util.NavigableMap;
 import java.util.TreeMap;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class InventoryDB {
     private TreeMap<Integer,Integer> priceToCountMap = new TreeMap<>();
     private ReentrantLock lock = new ReentrantLock();
+    private ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock();
+    private Lock readLock = reentrantReadWriteLock.readLock();
+    private Lock writeLock = reentrantReadWriteLock.writeLock();
+    // if using regular lock.lock() try finally statements in the methods time to complete is 2s, using read write takes 0.8 s
 
     public int getNumberOfItemsInPriceRange(int lowerBound, int upperBound) {
-        lock.lock();
+        readLock.lock();
         try {
             Integer fromKey = priceToCountMap.ceilingKey(lowerBound);
             Integer toKey = priceToCountMap.floorKey(upperBound);
@@ -25,12 +31,12 @@ public class InventoryDB {
             }
             return sum;
         } finally {
-            lock.unlock();
+            readLock.unlock();
         }
     }
 
     public void addItem(int price) {
-        lock.lock();
+        writeLock.lock();
         try {
             Integer numberOfItemsForPrice = priceToCountMap.get(price);
             if (numberOfItemsForPrice == null) {
@@ -39,12 +45,12 @@ public class InventoryDB {
                 priceToCountMap.put(price, numberOfItemsForPrice + 1);
             }
         } finally {
-            lock.unlock();
+            writeLock.unlock();
         }
     }
 
     public void removeItem(int price) {
-        lock.lock();
+        writeLock.lock();
         try {
             Integer numberOfItemsForPrice = priceToCountMap.get(price);
             if (numberOfItemsForPrice == null || numberOfItemsForPrice == 1) {
@@ -53,7 +59,7 @@ public class InventoryDB {
                 priceToCountMap.put(price, numberOfItemsForPrice - 1);
             }
         } finally {
-            lock.unlock();
+           writeLock.unlock();
         }
     }
 }
