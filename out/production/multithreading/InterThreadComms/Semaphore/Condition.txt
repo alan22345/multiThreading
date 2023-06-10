@@ -1,0 +1,12 @@
+Inter thread - condition await()
+await() - unlock lock wait until signalled
+awaitNanos(nanosTimeout) - wait no longer than nanosTimeout
+await(time, unit) - wait no longer than time in given time units
+awaitUntil(date deadline) - wake up before the deadline date
+
+condition signal - wake up a single thread waiting on the condition variable, if multiple are waiting only 1 is woken
+A thread that wakes up needs to reacquire the lock associated with the condition variable so a signal needs to lock.unlock
+If no thread is waiting on the condition var the signal method doesnt do anything
+
+Condition signalAll - sends a broadcast signal to all threads waiting on condition variable.
+doesnt need to know how many threads are waiting.

@@ -1,0 +1,6 @@
+Atomic reference allows us to perform atomic operations on the reference
+Can get and set the values
+
+CompareAndSet assigns new value if the new value if current value == expected value
+Ignores new value if current val != expected val
+Most atomic operations are actually carried out using compare and set

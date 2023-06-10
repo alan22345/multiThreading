@@ -1,0 +1,33 @@
+Can be used to restrict the number of users to a particular resource or group of resources
+Unlike locks that allow only one user(thread) per resource
+The semaphore can restrict any given number of users to a resource
+
+Semaphore - producer consumer
+
+Semaphore full  = new Semaphore(0)
+Semaphore empty = new Semaphore(1)
+Item item = null
+
+Producer
+while true{
+    empty.acquire();
+    item = produceNewItem()
+    full.release()
+}
+
+Consumer
+while true {
+    full.acquire()
+    consume(item)
+    empty.release
+}
+
+what happens above is the consumer tries to acquire the item but is blocked because semaphore is 0, and there are no
+available threads to run the method
+Meanwhile the producer uses it's existing semaphore to produce a new item and release the consumer semaphore allowing
+the consumer to carry on with its task only after the producer is finished while blocking the producer until the consumer
+is done consuming
+The above only works with 1 producer and consumer
+For many to many the item can be replaced by a QUEUE, decide on QUEUE capacity and initialise the producer with that capacity
+Add the reentrant lock to protect the queue from concurrent access, lock queue add item to queue unlock queue
+

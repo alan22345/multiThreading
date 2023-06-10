@@ -1,0 +1,15 @@
+Issues with locks
+Deadlocks are unrecoverable
+Can bring the application to a complete halt
+More locks means higher chance of deadlock
+Multiple threads using the same lock means on thread holds the lock for a much longer time than others
+All threads become as slow as the slowest thread
+Two threads sharing a lock - the lower priority thread acquires the lock and is preempted(scheduled out)
+High priority thread cannot progress because of the low prio lock not scheduled to release
+Thread dies, gets interrupted or forget to release a lock
+Leaves all thread hanging forever like a deadlock
+Performance overheard in having contention over a lock - threads being scheduled in and out will add overhead and can have
+great impact on very sensitive applications
+
+Why locks? guarantee to be executed as a single hardware instruction ATOMICITY
+By using Atomic class (available java10 +)  we can remove the issue of variables being non atomic
